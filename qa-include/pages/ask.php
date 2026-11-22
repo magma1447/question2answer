@@ -39,9 +39,10 @@ $followpostid = qa_get('follow');
 $in['categoryid'] = qa_clicked('doask') ? qa_get_category_field_value('category') : qa_get('cat');
 $userid = qa_get_logged_in_userid();
 
-list($categories, $followanswer, $completetags) = qa_db_select_with_pending(
+list($categories, $followanswer, $followquestion, $completetags) = qa_db_select_with_pending(
 	qa_db_category_nav_selectspec($in['categoryid'], true),
 	isset($followpostid) ? qa_db_full_post_selectspec($userid, $followpostid) : null,
+	isset($followpostid) ? qa_db_post_parent_q_selectspec($followpostid) : null, // only finds a visible question
 	qa_db_popular_tags_selectspec(0, QA_DB_RETRIEVE_COMPLETE_TAGS)
 );
 
@@ -49,7 +50,7 @@ if (!isset($categories[$in['categoryid'] ?? ''])) {
 	$in['categoryid'] = null;
 }
 
-if (@$followanswer['basetype'] != 'A') {
+if (@$followanswer['type'] != 'A' || !isset($followquestion)) { // only follow on from a visible answer to a visible question
 	$followanswer = null;
 }
 
