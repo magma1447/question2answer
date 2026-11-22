@@ -45,7 +45,7 @@ list($answer, $question, $qchildposts, $achildposts) = qa_db_select_with_pending
 
 // Check if there was an operation that succeeded
 
-if (@$answer['basetype'] == 'A' && @$question['basetype'] == 'Q') {
+if (($answer['basetype'] ?? null) == 'A' && ($question['basetype'] ?? null) == 'Q' && $answer['parentid'] == $question['postid']) {
 	$answers = qa_page_q_load_as($question, $qchildposts);
 
 	$question = $question + qa_page_q_post_rules($question, null, null, $qchildposts); // array union

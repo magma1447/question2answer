@@ -45,8 +45,9 @@ list($comment, $question, $parent, $children) = qa_db_select_with_pending(
 
 // Check if there was an operation that succeeded
 
-if (@$comment['basetype'] == 'C' && @$question['basetype'] == 'Q' &&
-	(@$parent['basetype'] == 'Q' || @$parent['basetype'] == 'A')
+if (($comment['basetype'] ?? null) == 'C' && ($question['basetype'] ?? null) == 'Q' &&
+	in_array($parent['basetype'] ?? null, array('Q', 'A')) && $comment['parentid'] == $parent['postid'] &&
+	($parent['postid'] == $question['postid'] || $parent['parentid'] == $question['postid'])
 ) {
 	$comment = $comment + qa_page_q_post_rules($comment, $parent, $children, null); // array union
 

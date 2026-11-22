@@ -37,9 +37,11 @@ list($question, $parent, $children) = qa_db_select_with_pending(
 );
 
 
-// Check if the question and parent exist, and whether the user has permission to do this
+// Check if the question and parent exist and are visible, that the parent is the question or one of its answers,
+// and whether the user has permission to do this
 
-if (@$question['basetype'] == 'Q' && (@$parent['basetype'] == 'Q' || @$parent['basetype'] == 'A') &&
+if (($question['type'] ?? null) == 'Q' && in_array($parent['type'] ?? null, array('Q', 'A')) &&
+	($parent['postid'] == $question['postid'] || $parent['parentid'] == $question['postid']) &&
 	!qa_user_post_permit_error('permit_post_c', $parent, QA_LIMIT_COMMENTS)
 ) {
 	require_once QA_INCLUDE_DIR . 'app/captcha.php';
