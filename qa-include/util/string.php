@@ -721,7 +721,7 @@ function qa_random_alphanum($length)
 	$string = '';
 
 	while (strlen($string) < $length)
-		$string .= str_pad(base_convert(mt_rand(0, 46655), 10, 36), 3, '0', STR_PAD_LEFT);
+		$string .= str_pad(base_convert(random_int(0, 46655), 10, 36), 3, '0', STR_PAD_LEFT);
 
 	return substr($string, 0, $length);
 }
