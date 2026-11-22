@@ -127,8 +127,8 @@ function qa_image_constrain(&$width, &$height, $maxwidth, $maxheight = null)
 
 	if ($width > $maxwidth || $height > $maxheight) {
 		$multiplier = min($maxwidth / $width, $maxheight / $height);
-		$width = floor($width * $multiplier);
-		$height = floor($height * $multiplier);
+		$width = max(1, floor($width * $multiplier)); // at least 1 pixel, which imagecreatetruecolor() requires
+		$height = max(1, floor($height * $multiplier));
 
 		return true;
 	}
