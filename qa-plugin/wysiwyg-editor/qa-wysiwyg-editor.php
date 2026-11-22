@@ -62,6 +62,8 @@ class qa_wysiwyg_editor
 			'function wysiwyg_editor_ajax(totalEdited) {',
 			'	$.ajax({',
 			'		url: ' . qa_js(qa_path('wysiwyg-editor-ajax')) . ',',
+			'		method: "POST",',
+			'		data: {code: ' . qa_js(qa_get_form_security_code('wysiwyg-editor-ajax')) . '},',
 			'		success: function(response) {',
 			'			var postsEdited = parseInt(response, 10);',
 			'			var $btn = $("#wysiwyg_editor_ajax");',

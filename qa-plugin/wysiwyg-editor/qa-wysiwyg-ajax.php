@@ -31,6 +31,12 @@ class qa_wysiwyg_ajax
 	// Fix path to WYSIWYG editor smileys
 	public function process_request($request)
 	{
+		// only for an admin, from the button on the plugin's admin form, since it locks tables and changes posts
+		if (qa_get_logged_in_level() < QA_USER_LEVEL_ADMIN || !qa_check_form_security_code('wysiwyg-editor-ajax', qa_post_text('code'))) {
+			echo 'ERROR';
+			return null;
+		}
+
 		require_once QA_INCLUDE_DIR . 'app/posts.php';
 
 		// smiley replacement regexes
