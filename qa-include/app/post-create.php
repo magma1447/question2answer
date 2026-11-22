@@ -41,6 +41,12 @@ require_once QA_INCLUDE_DIR . 'app/post-update.php';
  */
 function qa_combine_notify_email($userid, $notify, $email)
 {
+	require_once QA_INCLUDE_DIR . 'app/users.php';
+
+	// the forms only ask for an email address when the logged in user's account has none, so only accept one then
+	if (isset($userid) && $userid == qa_get_logged_in_userid() && strlen((string)qa_get_logged_in_email()))
+		$email = null;
+
 	return $notify ? (empty($email) ? (isset($userid) ? '@' : null) : $email) : null;
 }
 
