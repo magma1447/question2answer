@@ -32,7 +32,7 @@ function qa_cookie_get()
 {
 	if (qa_to_override(__FUNCTION__)) { $args=func_get_args(); return qa_call_override(__FUNCTION__, $args); }
 
-	return isset($_COOKIE['qa_id']) ? qa_gpc_to_string($_COOKIE['qa_id']) : null;
+	return is_string($_COOKIE['qa_id'] ?? null) ? qa_gpc_to_string($_COOKIE['qa_id']) : null;
 }
 
 

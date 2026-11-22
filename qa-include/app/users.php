@@ -401,7 +401,7 @@ if (QA_FINAL_EXTERNAL_USERS) {
 				if (!hash_equals(qa_session_verify_code($sessionuserid), @$_SESSION['qa_session_verify_' . $suffix]))
 					qa_clear_session_user();
 
-			if (!empty($_COOKIE['qa_session'])) {
+			if (!empty($_COOKIE['qa_session']) && is_string($_COOKIE['qa_session'])) {
 				@list($handle, $sessioncode, $remember) = explode('/', $_COOKIE['qa_session']);
 
 				if ($remember)
@@ -1274,7 +1274,7 @@ function qa_set_form_security_key()
 	if (!qa_is_logged_in() && !@$qa_form_key_cookie_set) {
 		$qa_form_key_cookie_set = true;
 
-		if (strlen($_COOKIE['qa_key'] ?? '') != QA_FORM_KEY_LENGTH) {
+		if (!is_string($_COOKIE['qa_key'] ?? null) || strlen($_COOKIE['qa_key']) != QA_FORM_KEY_LENGTH) {
 			require_once QA_INCLUDE_DIR . 'util/string.php';
 			$_COOKIE['qa_key'] = qa_random_alphanum(QA_FORM_KEY_LENGTH);
 		}
@@ -1365,7 +1365,7 @@ function qa_check_form_security_code($action, $value)
 				if ($loggedin) {
 					$silentproblems[] = 'now logged out';
 				} else {
-					$key = $_COOKIE['qa_key'] ?? null;
+					$key = is_string($_COOKIE['qa_key'] ?? null) ? $_COOKIE['qa_key'] : null;
 
 					if (!isset($key)) {
 						$silentproblems[] = 'key cookie missing';

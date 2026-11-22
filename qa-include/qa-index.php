@@ -104,7 +104,7 @@ else {
 			}
 
 			$relativedepth = count($requestparts);
-		} elseif (isset($_GET['qa'])) {
+		} elseif (is_string($_GET['qa'] ?? null)) {
 			if (strpos($_GET['qa'], '/') === false) {
 				$urlformat = (empty($_SERVER['REQUEST_URI']) || strpos($_SERVER['REQUEST_URI'], '/index.php') !== false)
 					? QA_URL_FORMAT_SAFEST : QA_URL_FORMAT_PARAMS;

@@ -841,17 +841,13 @@ function qa_fatal_error($message)
 	if (qa_to_override(__FUNCTION__)) { $args=func_get_args(); return qa_call_override(__FUNCTION__, $args); }
 
 	echo 'Question2Answer fatal error:<p style="color: red">' . qa_html($message, true) . '</p>';
-	@error_log('PHP Question2Answer fatal error: ' . $message);
-	echo '<p>Stack trace:<p>';
 
-	$backtrace = array_reverse(array_slice(debug_backtrace(), 1));
-	foreach ($backtrace as $trace) {
-		$color = strpos($trace['file'] ?? '', '/qa-plugin/') !== false ? 'red' : '#999';
-		echo sprintf(
-			'<code style="color: %s">%s() in %s:%s</code><br>',
-			$color, qa_html($trace['function'] ?? ''), basename($trace['file'] ?? ''), $trace['line'] ?? ''
-		);
-	}
+	// the stack trace goes to the error log only, not to the visitor
+	$calls = array();
+	foreach (array_reverse(array_slice(debug_backtrace(), 1)) as $trace)
+		$calls[] = ($trace['function'] ?? '') . '() in ' . ($trace['file'] ?? '') . ':' . ($trace['line'] ?? '');
+
+	@error_log('PHP Question2Answer fatal error: ' . $message . ' - stack trace: ' . implode(', ', $calls));
 
 	qa_exit('error');
 }
