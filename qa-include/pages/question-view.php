@@ -142,6 +142,8 @@ function qa_page_q_post_rules($post, $parentpost = null, $siblingposts = null, $
 	$rules['authorlast'] = !isset($post['lastuserid']) || $post['lastuserid'] === $post['userid'];
 	$rules['viewable'] = $post['hidden'] ? !$permiterror_hide_show_self : ($post['queued'] ? ($rules['isbyuser'] || !$permiterror_moderate) : true);
 
+	$notclosedbyother = !($rules['closed'] && isset($post['closedbyid']) && !$rules['authorlast']);
+
 	// Answer, comment and edit might show the button even if the user still needs to do something (e.g. log in)
 
 	$rules['answerbutton'] = $post['type'] == 'Q' && $permiterror_post_a != 'level' && !$rules['closed']
@@ -157,8 +159,9 @@ function qa_page_q_post_rules($post, $parentpost = null, $siblingposts = null, $
 		&& ($rules['isbyuser'] || (!in_array($permiterror_edit, $button_errors) && (!$post['queued'])));
 	$rules['editable'] = $rules['editbutton'] && ($rules['isbyuser'] || !$permiterror_edit);
 
+	// the author can't retag a question someone else closed: that would make the author the last editor, and so able to reopen it
 	$rules['retagcatbutton'] = $post['basetype'] == 'Q' && (qa_using_tags() || qa_using_categories())
-		&& !$post['hidden'] && ($rules['isbyuser'] || !in_array($permiterror_retagcat, $button_errors));
+		&& !$post['hidden'] && (($rules['isbyuser'] && $notclosedbyother) || !in_array($permiterror_retagcat, $button_errors));
 	$rules['retagcatable'] = $rules['retagcatbutton'] && ($rules['isbyuser'] || !$permiterror_retagcat);
 
 	if ($rules['editbutton'] && $rules['retagcatbutton']) {
@@ -179,7 +182,6 @@ function qa_page_q_post_rules($post, $parentpost = null, $siblingposts = null, $
 
 	// Other actions only show the button if it's immediately possible
 
-	$notclosedbyother = !($rules['closed'] && isset($post['closedbyid']) && !$rules['authorlast']);
 	$nothiddenbyother = !($post['hidden'] && !$rules['authorlast']);
 
 	$rules['closeable'] = qa_opt('allow_close_questions') && $post['type'] == 'Q' && !$rules['closed'] && $permiterror_close_open === false;
