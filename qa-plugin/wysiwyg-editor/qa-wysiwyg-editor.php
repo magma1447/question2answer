@@ -172,6 +172,9 @@ class qa_wysiwyg_editor
 				($uploadall ? "	filebrowserUploadUrl: $fileUploadUrl," : ""),
 				"	filebrowserUploadMethod: 'form',", // Use form upload instead of XHR
 
+				// No version check: from 4.22.0 it calls CKSource's server and warns about versions without LTS support
+				"	versionCheck: false,",
+
 				// Set language to Q2A site language, falling back to English if not available.
 				"	defaultLanguage: 'en',",
 				"	language: " . qa_js(qa_opt('site_language')) . "",
@@ -181,7 +184,8 @@ class qa_wysiwyg_editor
 		}
 
 		if ($format == 'html') {
-			$html = $content;
+			// sanitized again, so that the editor never loads markup the current rules would remove
+			$html = qa_sanitize_html($content);
 			$text = $this->html_to_text($content);
 		}
 		else {
