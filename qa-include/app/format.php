@@ -165,7 +165,7 @@ function qa_get_favorite_non_qs_map()
 						break;
 
 					case QA_ENTITY_TAG:
-						$qa_favorite_non_qs_map['tag'][qa_strtolower($favorite['tags'])] = true;
+						$qa_favorite_non_qs_map['tag'][qa_strtolower($favorite['tags'] ?? '')] = true;
 						break;
 
 					case QA_ENTITY_CATEGORY:
@@ -2220,6 +2220,10 @@ function qa_get_post_content($editorfield, $contentfield, &$ineditor, &$inconten
 
 	$ineditor = qa_post_text($editorfield);
 	$editor = qa_load_module('editor', $ineditor);
+	if ($editor === null) {
+		$editor = qa_load_module('editor', '');
+	}
+
 	$readdata = $editor->read_post($contentfield);
 
 	// sanitise 4-byte Unicode
