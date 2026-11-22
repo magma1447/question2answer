@@ -1106,6 +1106,7 @@ function qa_js($value, $forcequotes = false)
 				'\\' => '\\\\',
 				"\n" => "\\n",
 				"\r" => "\\n",
+				'<' => '\\x3C', // so that a value can't start an HTML comment, such as <!--<script>, inside a script element
 			)) . "'";
 }
 
