@@ -62,6 +62,9 @@ $maximaDefaults = array(
 	// Keep event streams trimmed - not worth storing too many events per question because we only display the
 	// most recent event for each question, that has not been invalidated due to hiding/unselection/etc...
 	'QA_DB_MAX_EVENTS_PER_Q' => 5,
+
+	// Each different word in a search adds to the cost of its query, so only this many are looked up
+	'QA_DB_MAX_SEARCH_WORDS' => 20,
 );
 
 foreach ($maximaDefaults as $key => $def) {

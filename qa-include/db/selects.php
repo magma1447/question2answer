@@ -885,6 +885,12 @@ function qa_db_search_posts_selectspec($voteuserid, $titlewords, $contentwords, 
 {
 	$count = isset($count) ? min($count, QA_DB_RETRIEVE_QS_AS) : QA_DB_RETRIEVE_QS_AS;
 
+	// look up only the first QA_DB_MAX_SEARCH_WORDS different words of each kind
+	$titlewords = array_slice(array_unique((array)$titlewords), 0, QA_DB_MAX_SEARCH_WORDS);
+	$contentwords = array_slice(array_unique((array)$contentwords), 0, QA_DB_MAX_SEARCH_WORDS);
+	$tagwords = array_slice(array_unique((array)$tagwords), 0, QA_DB_MAX_SEARCH_WORDS);
+	$handlewords = array_slice(array_unique((array)$handlewords), 0, QA_DB_MAX_SEARCH_WORDS);
+
 	// add LOG(postid)/1000000 here to ensure ordering is deterministic even if several posts have same score
 	// The score also gives a bonus for hot questions, where the bonus scales linearly with hotness. The hottest
 	// question gets a bonus equivalent to a matching unique tag, and the least hot question gets zero bonus.
