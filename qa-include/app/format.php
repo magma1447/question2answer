@@ -1179,10 +1179,11 @@ function qa_url_to_html_link($url, $newwindow = false)
 		if (!is_numeric(strpos($linkurl, ':/')))
 			$linkurl = 'http://' . $linkurl;
 
-		return '<a href="' . qa_html($linkurl) . '" rel="nofollow"' . ($newwindow ? ' target="_blank"' : '') . '>' . qa_html($url) . '</a>';
+		if (preg_match('#^(https?|ftp)://#i', $linkurl)) // a URL such as javascript://... is shown as text, not linked
+			return '<a href="' . qa_html($linkurl) . '" rel="nofollow"' . ($newwindow ? ' target="_blank"' : '') . '>' . qa_html($url) . '</a>';
+	}
 
-	} else
-		return qa_html($url);
+	return qa_html($url);
 }
 
 
