@@ -1295,7 +1295,7 @@ function qa_calc_form_security_hash($action, $timestamp)
 {
 	if (qa_to_override(__FUNCTION__)) { $args=func_get_args(); return qa_call_override(__FUNCTION__, $args); }
 
-	$salt = qa_opt('form_security_salt');
+	$salt = qa_opt('form_security_key');
 
 	if (qa_is_logged_in())
 		return sha1($salt . '/' . $action . '/' . $timestamp . '/' . qa_get_logged_in_userid() . '/' . qa_get_logged_in_user_field('passsalt'));

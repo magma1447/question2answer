@@ -529,7 +529,7 @@ function qa_default_option($name)
 			$value = "\n\n\n--\n" . qa_opt('site_title') . "\n" . qa_opt('site_url');
 			break;
 
-		case 'form_security_salt':
+		case 'form_security_key': // replaces form_security_salt, which was made with mt_rand()
 			require_once QA_INCLUDE_DIR . 'util/string.php';
 			$value = qa_random_alphanum(32);
 			break;
