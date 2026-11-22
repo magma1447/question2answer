@@ -148,7 +148,10 @@ if (isset($pass_failure_type)) {
 else {
 	// this page was requested by user GET/POST, so handle any incoming clicks on buttons
 
-	if (qa_clicked('create')) {
+	// only the button that the database's state offers (see below), so that nobody can run the others on a working site
+	$dbstate = qa_db_check_tables();
+
+	if (qa_clicked('create') && $dbstate === 'none') {
 		qa_db_install_tables();
 
 		if (QA_FINAL_EXTERNAL_USERS) {
@@ -180,23 +183,23 @@ else {
 		}
 	}
 
-	if (qa_clicked('nonuser')) {
+	if (qa_clicked('nonuser') && $dbstate === 'non-users-missing') {
 		qa_db_install_tables();
 		$success .= 'The additional Question2Answer database tables have been created.';
 	}
 
-	if (qa_clicked('upgrade')) {
+	if (qa_clicked('upgrade') && $dbstate === 'old-version') {
 		qa_db_upgrade_tables();
 		$success .= 'Your Question2Answer database has been updated.';
 	}
 
-	if (qa_clicked('repair')) {
+	if (qa_clicked('repair') && ($dbstate === 'table-missing' || $dbstate === 'column-missing')) {
 		qa_db_install_tables();
 		$success .= 'The Question2Answer database tables have been repaired.';
 	}
 
 	qa_initialize_postdb_plugins();
-	if (qa_clicked('module')) {
+	if (qa_clicked('module') && $dbstate === false) {
 		$moduletype = qa_post_text('moduletype');
 		$modulename = qa_post_text('modulename');
 
