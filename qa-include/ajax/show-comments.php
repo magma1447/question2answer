@@ -40,10 +40,15 @@ list($question, $parent, $children, $duplicateposts) = qa_db_select_with_pending
 	qa_db_post_duplicates_selectspec($questionid)
 );
 
-if (isset($parent)) {
+// Only for a parent that is the question or one of its answers, and only if the user may see both, as on the question page
+
+if (($question['basetype'] ?? null) == 'Q' && isset($parent) && ($parent['postid'] == $question['postid'] || $parent['parentid'] == $question['postid'])) {
+	$question = $question + qa_page_q_post_rules($question, null, null, $duplicateposts);
 	$parent = $parent + qa_page_q_post_rules($parent, null, null, $children + $duplicateposts);
 	// in theory we should retrieve the parent's parent and siblings for the above, but they're not going to be relevant
+}
 
+if (!empty($question['viewable']) && !empty($parent['viewable'])) {
 	foreach ($children as $key => $child) {
 		$children[$key] = $child + qa_page_q_post_rules($child, $parent, $children, null);
 	}
