@@ -1981,10 +1981,11 @@ function qa_db_user_updates_selectspec($userid, $forfavorites = true, $forconten
 	$selectspec['source'] .=
 		" JOIN ^posts AS updateposts ON updateposts.postid=fullevents.lastpostid" .
 		" AND (updateposts.type IN ('Q', 'A', 'C') OR fullevents.entitytype=" . $nonesql . ")" .
-		" AND (^posts.selchildid=fullevents.lastpostid OR NOT fullevents.updatetype<=>$) AND ^posts.type IN ('Q', 'Q_HIDDEN')" .
+		" AND (^posts.selchildid=fullevents.lastpostid OR NOT fullevents.updatetype<=>$)" .
+		" AND (^posts.type='Q' OR (^posts.type='Q_HIDDEN' AND ^posts.userid=$))" . // a hidden question only for its author, who can still open it
 		(QA_FINAL_EXTERNAL_USERS ? '' : ' LEFT JOIN ^users AS eventusers ON fullevents.lastuserid=eventusers.userid') .
 		' LEFT JOIN ^userpoints AS eventuserpoints ON fullevents.lastuserid=eventuserpoints.userid';
-	$selectspec['arguments'][] = QA_UPDATE_SELECTED;
+	array_push($selectspec['arguments'], QA_UPDATE_SELECTED, $userid);
 
 	unset($selectspec['arraykey']); // allow same question to be retrieved multiple times
 
