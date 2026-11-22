@@ -1076,7 +1076,7 @@ foreach ($showoptions as $optionname) {
 					$updatehtml = '(<span id="' . $elementid . '">...</span>)';
 
 					$qa_content['script_onloads'][] = array(
-						"qa_version_check(" . qa_js($metadata['update_uri']) . ", " . qa_js($metadata['version'], true) . ", " . qa_js($elementid) . ", false);"
+						"qa_version_check(" . qa_js($metadata['update_uri']) . ", " . qa_js($metadata['version'], true) . ", " . qa_js($elementid) . ", false, " . qa_js(qa_get_form_security_code('admin/version')) . ");"
 					);
 
 				}

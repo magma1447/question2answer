@@ -27,6 +27,11 @@ if (qa_get_logged_in_level() < QA_USER_LEVEL_ADMIN) {
 	return;
 }
 
+if (!qa_check_form_security_code('admin/version', qa_post_text('code'))) { // it fetches a given URL from the server
+	echo "QA_AJAX_RESPONSE\n0\n" . qa_lang_html('misc/form_security_reload');
+	return;
+}
+
 $uri = qa_post_text('uri');
 $currentVersion = qa_post_text('version');
 $isCore = qa_post_text('isCore') === "true";
