@@ -1112,6 +1112,8 @@ function qa_any_get_userids_handles($questions)
  * Return $html with any URLs converted into links (with nofollow and in a new window if $newwindow).
  * Closing parentheses/brackets are removed from the link if they don't have a matching opening one. This avoids creating
  * incorrect URLs from (http://www.question2answer.org) but allow URLs such as http://www.wikipedia.org/Computers_(Software)
+ * A URL ends before a double quote: the text of an HTML post may contain one, and inside the link's href it would end the
+ * attribute and let the rest of the URL add attributes of its own.
  * @param $html
  * @param bool $newwindow
  * @return mixed
@@ -1121,7 +1123,7 @@ function qa_html_convert_urls($html, $newwindow = false)
 	if (qa_to_override(__FUNCTION__)) { $args=func_get_args(); return qa_call_override(__FUNCTION__, $args); }
 
 	$uc = 'a-z\x{00a1}-\x{ffff}';
-	$url_regex = '#\b((?:https?|ftp)://(?:[0-9' . $uc . '][0-9' . $uc . '-]*\.)+[' . $uc . ']{2,}(?::\d{2,5})?(?:/(?:[^\s<>]*[^\s<>\.])?)?)#iu';
+	$url_regex = '#\b((?:https?|ftp)://(?:[0-9' . $uc . '][0-9' . $uc . '-]*\.)+[' . $uc . ']{2,}(?::\d{2,5})?(?:/(?:[^\s<>"]*[^\s<>"\.])?)?)#iu';
 
 	// get matches and their positions
 	if (preg_match_all($url_regex, $html, $matches, PREG_OFFSET_CAPTURE)) {
