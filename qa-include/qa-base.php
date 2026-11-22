@@ -1841,7 +1841,6 @@ function qa_retrieve_url($url)
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
 		$contents = (string)curl_exec($curl);
-		curl_close($curl);
 	}
 
 	return $contents;
