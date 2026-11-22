@@ -537,7 +537,7 @@ function qa_page_q_close_q_form(&$qa_content, $question, $id, $in, $errors)
 				'tags' => 'name="q_close_details" id="q_close_details"',
 				'label' =>
 					'<span id="close_label_other">' . qa_lang_html('question/close_reason_title') . '</span>',
-				'value' => @$in['details'],
+				'value' => qa_html($in['details'] ?? null),
 				'error' => qa_html(isset($errors['details']) ? $errors['details'] : null),
 			),
 		),
