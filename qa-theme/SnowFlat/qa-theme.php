@@ -134,7 +134,7 @@ class qa_html_theme extends qa_html_theme_base
 	{
 		parent::logged_in();
 		if (qa_is_logged_in()) {
-			$userpoints = qa_get_logged_in_points();
+			$userpoints = qa_get_logged_in_points() ?? 0; // null until the user has points
 			$pointshtml = $userpoints == 1
 				? qa_lang_html_sub('main/1_point', '1', '1')
 				: qa_html(qa_format_number($userpoints))
