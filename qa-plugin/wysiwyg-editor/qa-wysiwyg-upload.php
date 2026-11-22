@@ -34,7 +34,11 @@ class qa_wysiwyg_upload
 		$url = '';
 
 		if (is_array($_FILES) && count($_FILES)) {
-			if (qa_opt('wysiwyg_editor_upload_images')) {
+			// only for a user who may post with the editor, and with the code in the upload URL that the editor was given
+			$mayupload = (!qa_user_maximum_permit_error('permit_post_q') || !qa_user_maximum_permit_error('permit_post_a') || !qa_user_maximum_permit_error('permit_post_c'))
+				&& qa_check_form_security_code('wysiwyg-editor-upload', qa_get('code'));
+
+			if (qa_opt('wysiwyg_editor_upload_images') && $mayupload) {
 				require_once QA_INCLUDE_DIR . 'app/upload.php';
 
 				$onlyImage = qa_get('qa_only_image');
