@@ -103,9 +103,7 @@ function qa_image_constrain_data($imagedata, &$width, &$height, $maxwidth, $maxh
 	}
 
 	if ($inimage !== false) {
-		$imagedata = qa_gd_image_jpeg($inimage);
-		imagedestroy($inimage);
-		return $imagedata;
+		return qa_gd_image_jpeg($inimage);
 	}
 
 	return null;
@@ -158,11 +156,7 @@ function qa_gd_image_resize(&$image, $width, $height)
 	if ($newimage !== false) {
 		if (imagecopyresampled($newimage, $oldimage, 0, 0, 0, 0, $width, $height, imagesx($oldimage), imagesy($oldimage)))
 			$image = $newimage;
-		else
-			imagedestroy($newimage);
 	}
-
-	imagedestroy($oldimage);
 }
 
 

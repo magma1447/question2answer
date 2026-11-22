@@ -170,10 +170,6 @@ function qa_upload_file($localfilename, $sourcefilename, $maxfilesize = null, $o
 					}
 				}
 			}
-
-			if ($image !== null && $image !== false) { // might have been lost
-				imagedestroy($image);
-			}
 		}
 	}
 
