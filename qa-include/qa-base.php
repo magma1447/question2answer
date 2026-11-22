@@ -1024,12 +1024,12 @@ function qa_sanitize_html($html, $linksnewwindow = false, $storage = false)
 
 	$safe = htmLawed($html, array(
 		'safe' => 1,
-		'elements' => '*-form-input-select-textarea-style',
+		'elements' => '*-button-fieldset-form-input-link-output-select-textarea-style',
 		'schemes' => 'href: aim, feed, file, ftp, gopher, http, https, irc, mailto, news, nntp, sftp, ssh, telnet; *:file, http, https; style: !; classid:clsid',
 		'keep_bad' => 0,
 		'anti_link_spam' => array('/.*/', ''),
 		'hook_tag' => 'qa_sanitize_html_hook_tag',
-		'deny_attribute' => 'itemprop, itemscope, itemtype, itemid, itemref',
+		'deny_attribute' => 'itemprop, itemscope, itemtype, itemid, itemref, data*',
 	));
 
 	return $safe;
@@ -1057,6 +1057,11 @@ function qa_sanitize_html_hook_tag($element, $attributes = null)
 
 	if ($element == 'a' && isset($attributes['href']) && $qa_sanitize_html_newwindow)
 		$attributes['target'] = '_blank';
+
+	if (isset($attributes['rel'])) { // drop rel="opener", which gives a page the link opens in a new window control over this one
+		$rels = preg_split('/\s+/', strtolower(html_entity_decode($attributes['rel'], ENT_QUOTES | ENT_HTML5, 'UTF-8')), -1, PREG_SPLIT_NO_EMPTY);
+		$attributes['rel'] = qa_html(implode(' ', array_diff($rels, array('opener'))));
+	}
 
 	$html = '<' . $element;
 	foreach ($attributes as $key => $value)
