@@ -156,7 +156,7 @@ else {
 		reset($requestparts);
 		$key = key($requestparts);
 
-		$requestkey = isset($requestparts[$key]) ? $requestparts[$key] : '';
+		$requestkey = isset($requestparts[$key ?? '']) ? $requestparts[$key] : '';
 		$replacement = array_search($requestkey, qa_get_request_map());
 		if ($replacement !== false)
 			$requestparts[$key] = $replacement;

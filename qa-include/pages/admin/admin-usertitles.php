@@ -148,7 +148,7 @@ $qa_content['form'] = array(
 
 	'buttons' => array(
 		'save' => array(
-			'label' => qa_lang_html(isset($pointstitle[$oldpoints]) ? 'main/save_button' : ('admin/add_title_button')),
+			'label' => qa_lang_html(isset($pointstitle[$oldpoints ?? '']) ? 'main/save_button' : ('admin/add_title_button')),
 		),
 
 		'cancel' => array(
@@ -164,7 +164,7 @@ $qa_content['form'] = array(
 	),
 );
 
-if (isset($pointstitle[$oldpoints])) {
+if (isset($pointstitle[$oldpoints ?? ''])) {
 	qa_set_display_rules($qa_content, array(
 		'points_display' => '!dodelete',
 	));

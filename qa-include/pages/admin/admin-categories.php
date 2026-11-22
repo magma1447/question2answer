@@ -49,7 +49,7 @@ if (!qa_admin_check_privileges($qa_content))
 
 // Work out the appropriate state for the page
 
-$editcategory = $categories[$editcategoryid] ?? null;
+$editcategory = $categories[$editcategoryid ?? ''] ?? null;
 
 if (isset($editcategory)) {
 	$parentid = qa_get('addsub');

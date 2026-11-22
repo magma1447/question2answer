@@ -136,7 +136,7 @@ function qa_q_list_page_content($questions, $pagesize, $start, $count, $sometitl
 	}
 
 	// set meta description on category pages
-	if (!empty($navcategories[$categoryid]['content'])) {
+	if (!empty($navcategories[$categoryid ?? '']['content'])) {
 		$qa_content['description'] = qa_html($navcategories[$categoryid]['content']);
 	}
 
@@ -194,7 +194,7 @@ function qa_qs_sub_navigation($sort, $categoryslugs)
 		),
 	);
 
-	if (isset($navigation[$sort])) {
+	if (isset($navigation[$sort ?? ''])) {
 		$navigation[$sort]['selected'] = true;
 	} else {
 		$navigation['recent']['selected'] = true;

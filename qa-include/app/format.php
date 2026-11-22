@@ -1368,7 +1368,7 @@ function qa_category_navigation($categories, $selectedid = null, $pathprefix = '
 	$parentcategories = array();
 
 	foreach ($categories as $category)
-		$parentcategories[$category['parentid']][] = $category;
+		$parentcategories[$category['parentid'] ?? ''][] = $category; // top-level categories under ''
 
 	$selecteds = qa_category_path($categories, $selectedid);
 	$favoritemap = qa_get_favorite_non_qs_map();
@@ -1403,8 +1403,8 @@ function qa_category_navigation_sub($parentcategories, $parentid, $selecteds, $p
 		);
 	}
 
-	if (isset($parentcategories[$parentid])) {
-		foreach ($parentcategories[$parentid] as $category) {
+	if (isset($parentcategories[$parentid ?? ''])) {
+		foreach ($parentcategories[$parentid ?? ''] as $category) {
 			$navigation[qa_html($category['tags'])] = array(
 				'url' => qa_path_html($pathprefix . $category['tags'], $pathparams),
 				'label' => qa_html($category['title']),

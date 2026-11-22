@@ -46,7 +46,7 @@ $categories = qa_db_select_with_pending(qa_db_category_nav_selectspec(null, true
 if (empty($adminsection)) {
 	$subnav = qa_admin_sub_navigation();
 
-	if (isset($subnav[@$_COOKIE['qa_admin_last']]))
+	if (isset($subnav[$_COOKIE['qa_admin_last'] ?? '']))
 		qa_redirect($_COOKIE['qa_admin_last']);
 	elseif (count($subnav)) {
 		reset($subnav);

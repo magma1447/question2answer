@@ -45,7 +45,7 @@ list($categories, $followanswer, $completetags) = qa_db_select_with_pending(
 	qa_db_popular_tags_selectspec(0, QA_DB_RETRIEVE_COMPLETE_TAGS)
 );
 
-if (!isset($categories[$in['categoryid']])) {
+if (!isset($categories[$in['categoryid'] ?? ''])) {
 	$in['categoryid'] = null;
 }
 
